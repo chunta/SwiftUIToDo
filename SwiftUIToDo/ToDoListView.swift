@@ -1,8 +1,25 @@
 import SwiftUI
 
+struct ChildView: View {
+    @Binding var counter: Int
+    
+    var body: some View {
+        VStack {
+            Text("Child Counter: \(counter)")
+                .font(.title)
+            
+            Button("Increase in Child") {
+                counter += 1
+            }
+            .padding()
+        }
+    }
+}
+
 struct ToDoListView<ViewModel: ToDoViewModelProtocol>: View {
     @StateObject private var viewModel: ViewModel
-
+    @State private var tt = CryMe()
+    
     init(viewModel: ViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
@@ -10,6 +27,8 @@ struct ToDoListView<ViewModel: ToDoViewModelProtocol>: View {
     var body: some View {
         NavigationView {
             List {
+                ChildView(counter: $tt.count)
+                Text("\(tt.count)")
                 ForEach(viewModel.todos) { item in
                     HStack {
                         Button(action: {
@@ -28,7 +47,7 @@ struct ToDoListView<ViewModel: ToDoViewModelProtocol>: View {
             .navigationTitle("ToDo List")
             .toolbar {
                 ToolbarItem(placement: .navigationBarTrailing) {
-                    Button("Add") {
+                    Button("Add \(viewModel.todos.count)") {
                         viewModel.addToDo(title: "New Task")
                     }
                 }

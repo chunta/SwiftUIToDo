@@ -9,6 +9,10 @@ protocol ToDoViewModelProtocol: ObservableObject {
     func deleteToDo(at offsets: IndexSet)
 }
 
+@Observable class CryMe {
+    var count = 0
+}
+
 final class ToDoViewModel: ToDoViewModelProtocol {
     @Published private(set) var todos: [ToDoItem] = []
     private var cancellables = Set<AnyCancellable>()
@@ -55,4 +59,5 @@ final class ToDoViewModel: ToDoViewModelProtocol {
         }
         fetchToDos()
     }
+
 }
